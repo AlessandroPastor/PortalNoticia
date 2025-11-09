@@ -1,0 +1,371 @@
+2025-09-11 22:33:53,271 - INFO - Configuración cargada correctamente
+2025-09-11 22:33:53,272 - INFO - Iniciando Pastor Noticias Daemon...
+2025-09-11 22:33:53,272 - INFO - Daemon configurado - Scraping cada 120 segundos
+2025-09-11 22:33:53,272 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:33:54,021 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:34:10,311 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:34:10,331 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:35:53,393 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:35:54,163 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:36:10,346 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:36:10,356 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:38:10,575 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:38:11,478 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:38:27,783 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:38:27,794 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:40:27,876 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:40:28,708 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:40:45,081 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:40:45,090 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:42:45,144 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:42:45,929 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:43:02,203 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:43:02,212 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:45:02,271 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:45:03,065 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:45:19,268 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:45:19,276 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:47:19,336 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:47:20,096 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:47:36,529 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:47:36,540 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:49:36,664 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:49:37,538 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:49:53,764 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:49:53,776 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:51:53,830 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:51:54,601 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:52:10,808 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:52:10,816 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:54:10,895 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:54:11,635 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:54:27,762 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:54:27,771 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:56:27,853 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:56:28,866 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:56:45,181 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:56:45,189 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 22:58:45,240 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 22:58:45,982 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 22:59:02,233 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 22:59:02,240 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:01:02,311 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:01:03,043 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:01:19,280 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:01:19,288 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:03:19,361 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:03:20,121 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:03:36,356 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:03:36,372 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:05:36,429 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:05:37,218 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:05:53,517 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:05:53,525 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:07:53,579 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:07:54,380 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:08:10,659 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:08:10,668 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:10:10,728 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:10:11,479 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:10:27,754 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:10:27,763 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:12:27,814 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:12:28,629 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:12:44,891 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:12:44,899 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:14:44,948 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:14:45,701 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:15:01,873 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:15:01,883 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:17:01,931 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:17:02,808 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:17:19,049 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:17:19,060 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:19:19,109 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:19:19,853 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:19:36,097 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:19:36,106 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:21:36,158 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:21:36,950 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:21:53,181 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:21:53,191 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:23:53,240 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:23:54,045 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:24:10,312 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:24:10,321 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:26:10,374 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:26:11,132 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:26:27,446 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:26:27,455 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:28:27,504 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:28:28,274 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:28:44,613 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:28:44,620 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:30:44,668 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:30:45,417 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:31:01,554 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:31:01,562 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:33:01,613 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:33:02,369 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:33:18,624 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:33:18,631 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:35:18,681 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:35:19,652 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:35:35,960 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:35:35,969 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:37:36,021 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:37:36,794 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:37:53,051 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:37:53,059 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:39:53,109 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:39:53,871 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:40:10,111 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:40:10,119 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:42:10,171 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:42:10,938 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:42:27,190 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:42:27,199 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:44:27,249 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:44:28,013 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:44:44,336 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:44:44,346 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:46:44,399 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:46:45,172 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:47:01,447 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:47:01,454 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:49:01,506 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:49:02,253 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:49:18,460 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:49:18,467 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:51:18,514 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:51:19,289 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:51:35,682 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:51:35,687 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:53:35,738 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:53:36,498 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:53:52,816 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:53:52,823 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:55:52,884 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:55:53,639 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:56:09,811 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:56:09,819 - INFO - Scraping completado: sin noticias nuevas
+2025-09-11 23:58:09,863 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-11 23:58:10,613 - INFO - Encontrados 14 enlaces válidos
+2025-09-11 23:58:26,843 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-11 23:58:26,850 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:00:26,899 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:00:27,627 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:00:43,795 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:00:43,803 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:02:43,855 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:02:44,610 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:03:00,864 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:03:00,873 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:05:00,925 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:05:01,659 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:05:17,834 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:05:17,844 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:07:17,893 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:07:18,941 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:07:35,200 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:07:35,208 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:09:35,258 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:09:36,134 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:09:52,357 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:09:52,365 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:11:52,416 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:11:53,193 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:12:09,479 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:12:09,486 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:14:09,547 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:14:10,352 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:14:26,654 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:14:26,662 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:16:26,712 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:16:27,437 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:16:43,676 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:16:43,683 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:18:43,740 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:18:44,541 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:19:00,812 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:19:00,818 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:21:00,867 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:21:01,628 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:21:17,843 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:21:17,850 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:23:17,905 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:23:18,669 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:23:34,878 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:23:34,885 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:25:34,934 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:25:35,690 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:25:52,019 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:25:52,026 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:27:52,078 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:27:52,856 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:28:09,234 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:28:09,239 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:30:09,289 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:30:10,055 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:30:26,324 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:30:26,332 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:32:26,383 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:32:27,158 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:32:43,323 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:32:43,330 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:34:43,386 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:34:44,156 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:35:00,454 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:35:00,463 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:37:00,514 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:37:01,285 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:37:17,584 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:37:17,590 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:39:17,639 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:39:18,359 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:39:34,574 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:39:34,580 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:41:34,629 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:41:35,488 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:41:51,694 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:41:51,702 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:43:51,751 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:43:52,486 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:44:08,639 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:44:08,647 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:46:08,697 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:46:09,536 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:46:25,720 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:46:25,727 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:48:25,778 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:48:26,544 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:48:42,757 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:48:42,763 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:50:42,810 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:50:43,632 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:50:59,768 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:50:59,777 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:52:59,832 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:53:00,642 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:53:16,876 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:53:16,887 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:55:16,941 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:55:17,686 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:55:33,905 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:55:33,911 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:57:33,960 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:57:34,731 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 00:57:50,962 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 00:57:50,970 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 00:59:51,033 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 00:59:51,779 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:00:08,137 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:00:08,145 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 01:02:08,194 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 01:02:08,979 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:02:25,224 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:02:25,231 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 01:04:25,284 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 01:04:26,032 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:04:42,314 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:04:42,321 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 01:06:42,371 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 01:06:43,163 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:06:59,346 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:06:59,355 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 01:08:59,406 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 01:09:00,438 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:09:16,701 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:09:16,709 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 01:11:16,758 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 01:11:17,484 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:11:33,680 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:11:33,689 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 01:13:33,743 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 01:13:34,576 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:13:50,806 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:13:50,814 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 01:15:50,865 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 01:15:51,593 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 01:16:07,783 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 01:16:07,789 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 03:23:37,551 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 03:23:39,681 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:07:44,562 - INFO - Configuración cargada correctamente
+2025-09-12 08:07:44,562 - INFO - Iniciando Pastor Noticias Daemon...
+2025-09-12 08:07:44,563 - INFO - Daemon configurado - Scraping cada 120 segundos
+2025-09-12 08:07:44,563 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:07:51,054 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:10:20,756 - INFO - Guardadas 0 noticias nuevas de 3 encontradas
+2025-09-12 08:10:20,766 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:10:20,766 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:10:48,351 - ERROR - Error en scraping: HTTPSConnectionPool(host='diariosinfronteras.com.pe', port=443): Read timed out. (read timeout=15)
+2025-09-12 08:10:48,358 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:12:48,402 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:12:49,328 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:13:06,459 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:13:06,466 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:15:06,514 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:15:07,620 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:15:23,967 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:15:23,975 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:17:24,021 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:17:24,781 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:17:41,131 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:17:41,138 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:19:41,182 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:19:41,922 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:19:58,234 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:19:58,242 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:21:58,300 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:21:59,069 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:22:15,422 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:22:15,431 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:24:15,480 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:24:16,193 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:24:32,517 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:24:32,526 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:26:33,102 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:26:33,856 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:26:50,345 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:26:50,353 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:28:50,497 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:28:51,344 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:29:27,860 - INFO - Guardadas 1 noticias nuevas de 14 encontradas
+2025-09-12 08:29:27,868 - INFO - Scraping completado: 1 noticias nuevas
+2025-09-12 08:31:27,937 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:31:28,641 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:31:44,992 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:31:45,000 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:33:45,061 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:33:45,937 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:34:02,348 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:34:02,355 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:36:02,443 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:36:03,174 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:36:19,449 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:36:19,455 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:38:19,519 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:38:20,306 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:38:36,655 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:38:36,662 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:40:36,711 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:40:37,463 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:40:53,796 - INFO - Guardadas 0 noticias nuevas de 14 encontradas
+2025-09-12 08:40:53,804 - INFO - Scraping completado: sin noticias nuevas
+2025-09-12 08:42:53,855 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:42:54,577 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:43:22,146 - INFO - Guardadas 2 noticias nuevas de 14 encontradas
+2025-09-12 08:43:22,154 - INFO - Scraping completado: 2 noticias nuevas
+2025-09-12 08:45:22,208 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:45:23,263 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:45:51,855 - INFO - Guardadas 2 noticias nuevas de 14 encontradas
+2025-09-12 08:45:51,860 - INFO - Scraping completado: 2 noticias nuevas
+2025-09-12 08:47:51,916 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:47:52,838 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:48:24,044 - INFO - Guardadas 2 noticias nuevas de 14 encontradas
+2025-09-12 08:48:24,049 - INFO - Scraping completado: 2 noticias nuevas
+2025-09-12 08:50:24,143 - INFO - Iniciando scraping de: https://diariosinfronteras.com.pe/
+2025-09-12 08:50:24,844 - INFO - Encontrados 14 enlaces válidos
+2025-09-12 08:51:00,773 - INFO - Guardadas 2 noticias nuevas de 14 encontradas
+2025-09-12 08:51:00,779 - INFO - Scraping completado: 2 noticias nuevas
