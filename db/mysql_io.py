@@ -45,12 +45,18 @@ def cargar_noticias():
     if not conn:
         return pd.DataFrame()
     try:
-        df = pd.read_sql("SELECT * FROM SCRAP ORDER BY fecha_scraping DESC", conn)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM SCRAP ORDER BY fecha_scraping DESC")
+        resultados = cursor.fetchall()
+        nombres_columnas = [i[0] for i in cursor.description]
+        df = pd.DataFrame(resultados, columns=nombres_columnas)
+        cursor.close()
         conn.close()
         return df
     except Exception as e:
         print(f"[DB] Error leyendo noticias: {e}")
-        conn.close()
+        if conn:
+            conn.close()
         return pd.DataFrame()
 
 def registrar_lectura(noticia_id, ip_address=None, user_agent=None):

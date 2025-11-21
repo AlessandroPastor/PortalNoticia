@@ -31,16 +31,34 @@ if str(BASE_DIR) not in sys.path:
     sys.path.append(str(BASE_DIR))
 # Agregar el directorio actual al path para imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+st.markdown("""
+<style>
+
+</style>
+""", unsafe_allow_html=True)
 
 # Ahora hacer los imports
 try:
     from components.search import barra_busqueda_avanzada
-    from components.cards import mostrar_grid_noticias
+    from components.cards import mostrar_grid_noticias, mostrar_card_noticia_mejorada
     from views.detail import mostrar_detalle_noticia_mejorado
     from views.favorites import mostrar_favoritos_mejorado
     from views.dashboard import mostrar_dashboard_analisis
+    from views.admin_dashboard import mostrar_dashboard_admin
+    from db.admin import (
+        tiene_permiso_admin,
+        obtener_fuentes_permitidas_por_rol,
+        verificar_permiso_scraping
+    )
     from utils.helpers import inicializar_session_state, registrar_lectura
     from components.notifications import mostrar_toast
+    from components.login import (
+        mostrar_login,
+        mostrar_header_usuario,
+        verificar_autenticacion,
+        requerir_autenticacion,
+        mostrar_perfil
+    )
 except ImportError as e:
     st.error(f"Error de importación: {e}")
     st.info("Asegúrate de que la estructura de archivos sea correcta")
@@ -55,6 +73,17 @@ st.set_page_config(
 
 # Inicialización del estado de sesión
 def init_session_state():
+    # Autenticación
+    if 'autenticado' not in st.session_state:
+        st.session_state.autenticado = False
+    if 'usuario' not in st.session_state:
+        st.session_state.usuario = None
+    if 'session_token' not in st.session_state:
+        st.session_state.session_token = None
+    if 'mostrar_perfil' not in st.session_state:
+        st.session_state.mostrar_perfil = False
+    
+    # Otros estados
     if 'favoritos' not in st.session_state:
         st.session_state.favoritos = set()
     if 'lecturas' not in st.session_state:
@@ -76,9 +105,8 @@ def init_session_state():
     if 'confirmar_reset' not in st.session_state:
         st.session_state.confirmar_reset = False
 
-# Funciones de extracción
 def extraer_titulo(soup):
-    """Extraer título con múltiples estrategias"""
+    """Extraer título LIMPIO (sin HTML)"""
     selectors = [
         "h1",
         ".entry-title",
@@ -90,6 +118,7 @@ def extraer_titulo(soup):
     for selector in selectors:
         element = soup.select_one(selector)
         if element:
+            # USAR get_text() para obtener solo texto, sin HTML
             title = element.get_text(strip=True)
             if len(title) > 10:
                 return title
@@ -396,21 +425,34 @@ def descubre_desde_sitemap(base_url, max_items=600):
     return urls
 
 def extrae_mejor_texto(soup):
+    """Extrae contenido LIMPIO (sin HTML)"""
+    # PRIMERO: Intentar con article
     article = soup.find("article")
     if article:
-        ps = article.find_all("p")
-        txt = " ".join(p.get_text(" ", strip=True) for p in ps)
+        # USAR get_text() para obtener solo texto
+        txt = article.get_text(" ", strip=True)
         if len(txt) > 200:
             return txt
-    for sel in [".entry-content",".post-content",".article-content",".content","#content"]:
+    
+    # SEGUNDO: Buscar en contenedores de contenido
+    for sel in [".entry-content", ".post-content", ".article-content", ".content", "#content"]:
         box = soup.select_one(sel)
         if box:
-            ps = box.find_all("p")
-            txt = " ".join(p.get_text(" ", strip=True) for p in ps)
+            # USAR get_text() para obtener solo texto
+            txt = box.get_text(" ", strip=True)
             if len(txt) > 200:
                 return txt
+    
+    # TERCERO: Todos los párrafos
     ps = soup.find_all("p")
-    return " ".join(p.get_text(" ", strip=True) for p in ps[:30])
+    if ps:
+        # USAR get_text() en cada párrafo
+        txt = " ".join(p.get_text(" ", strip=True) for p in ps[:10])
+        if len(txt) > 150:
+            return txt
+    
+    # ÚLTIMO: Todo el body como fallback (SOLO TEXTO)
+    return soup.get_text(" ", strip=True)[:1000]
 
 def fetch_articulo(url, base_url):
     try:
@@ -505,10 +547,26 @@ def main():
     crear_tablas()
     aplicar_tema()
 
+    # Verificar autenticación
+    autenticado = verificar_autenticacion()
+    
+    # Si no está autenticado, mostrar login y detener ejecución
+    if not autenticado:
+        mostrar_login()
+        return
+    
+    # Si el usuario quiere ver su perfil
+    if st.session_state.get('mostrar_perfil', False):
+        mostrar_perfil()
+        return
+    
+    # Usuario autenticado - mostrar aplicación
+    mostrar_header_usuario()
+    
     # Header principal
     st.markdown("""
     <div class="main-header">
-        <h1> Q' PASA </h1>
+        <h1>Q' PASA</h1>
         <p>Tu portal inteligente de noticias con la mejor experiencia de usuario</p>
     </div>
     """, unsafe_allow_html=True)
@@ -528,6 +586,7 @@ def main():
                                    key="toggle_dark", help="🌙 Modo Oscuro / ☀️ Modo Claro")
             if nuevo_modo != st.session_state.get("dark_mode", False):
                 st.session_state.dark_mode = nuevo_modo
+                aplicar_tema()
                 st.rerun()
         
         st.markdown('</div>', unsafe_allow_html=True)
@@ -536,14 +595,32 @@ def main():
         st.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
         st.markdown('<h3 class="sidebar-title">🌐 Obtener Noticias</h3>', unsafe_allow_html=True)
         
-        # Selección de fuentes
+        # Obtener fuentes permitidas según el rol del usuario
+        usuario_actual = st.session_state.get('usuario', {})
+        rol_usuario = usuario_actual.get('rol', 'usuario')
+        
+        # Obtener fuentes permitidas para este rol
+        fuentes_permitidas = obtener_fuentes_permitidas_por_rol(rol_usuario, fuentes_disponibles)
+        
+        if not fuentes_permitidas:
+            st.warning("⚠️ No tienes permisos para scrapear ninguna fuente. Contacta al administrador.")
+            st.markdown('</div>', unsafe_allow_html=True)
+            st.stop()
+        
+        # Selección de fuentes (solo las permitidas)
+        fuentes_default = fuentes_permitidas[:2] if len(fuentes_permitidas) >= 2 else fuentes_permitidas
+        
         fuentes_seleccionadas = st.multiselect(
-            "Fuentes disponibles:",
-            options=list(fuentes_disponibles.keys()),
-            default=["Diario Sin Fronteras", "La República"],
-            help="Selecciona una o más fuentes para scrapear",
+            f"Fuentes disponibles ({len(fuentes_permitidas)} permitidas):",
+            options=fuentes_permitidas,
+            default=fuentes_default,
+            help=f"Puedes scrapear {len(fuentes_permitidas)} fuente(s) según tu rol ({rol_usuario})",
             key="fuentes_multi"
         )
+        
+        if len(fuentes_seleccionadas) > len(fuentes_permitidas):
+            st.error("⚠️ Has seleccionado más fuentes de las permitidas para tu rol")
+            fuentes_seleccionadas = fuentes_seleccionadas[:len(fuentes_permitidas)]
         
         # Botón de scraping
         col_btn1, col_btn2 = st.columns([3, 1])
@@ -557,7 +634,7 @@ def main():
             )
         with col_btn2:
             if len(fuentes_seleccionadas) > 0:
-                st.markdown(f'<div style="text-align:center;padding-top:8px;color:var(--neon-blue);font-weight:bold;">{len(fuentes_seleccionadas)}</div>', 
+                st.markdown(f'<div style="text-align:center;padding-top:8px;color:#3b82f6;font-weight:bold;">{len(fuentes_seleccionadas)}</div>', 
                            unsafe_allow_html=True)
         
         if scrape_btn:
@@ -571,7 +648,14 @@ def main():
                     st.info(f"⚙️ {message}")
             
             total_insertados = 0
+            fuentes_no_permitidas = []
+            
             for idx, fuente in enumerate(fuentes_seleccionadas, start=1):
+                # Verificar permiso para esta fuente
+                if not verificar_permiso_scraping(rol_usuario, fuente):
+                    fuentes_no_permitidas.append(fuente)
+                    continue
+                
                 url = fuentes_disponibles[fuente]
                 update_progress(
                     int((idx / len(fuentes_seleccionadas)) * 100), 
@@ -588,6 +672,12 @@ def main():
                 if noticias:
                     insertados = guardar_en_mysql(noticias)
                     total_insertados += insertados
+            
+            # Mostrar advertencia si hay fuentes no permitidas
+            if fuentes_no_permitidas:
+                status_container.warning(
+                    f"⚠️ No tienes permisos para scrapear: {', '.join(fuentes_no_permitidas)}"
+                )
             
             progress_container.empty()
             if total_insertados > 0:
@@ -616,7 +706,7 @@ def main():
             
             st.markdown(f"""
             <div style="
-                background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+                background: linear-gradient(135deg, #3b82f6, #8b5cf6);
                 padding: 0.75rem;
                 border-radius: 8px;
                 margin-top: 0.5rem;
@@ -639,6 +729,11 @@ def main():
             {"icon": "🔥", "label": "Lo Más Leído", "view": "mas_leidas"},
             {"icon": "📊", "label": "Análisis", "view": "analisis"},
         ]
+        
+        # Agregar dashboard admin si el usuario tiene permisos
+        usuario_actual = st.session_state.get('usuario', {})
+        if usuario_actual and tiene_permiso_admin(usuario_actual.get('rol', '')):
+            nav_items.append({"icon": "👑", "label": "Panel Admin", "view": "admin"})
 
         vista_actual = st.session_state.get("vista_actual", "portada")
 
@@ -648,14 +743,14 @@ def main():
             if is_active:
                 st.markdown(f"""
                 <div style="
-                    background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+                    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
                     padding: 0.75rem;
                     border-radius: 8px;
                     margin-bottom: 0.5rem;
                     text-align: center;
                     color: white;
                     font-weight: bold;
-                    box-shadow: var(--shadow-neon);
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
                 ">
                     {item['icon']} {item['label']} ✓
                 </div>
@@ -696,7 +791,7 @@ def main():
             st_autorefresh(interval=refresh_seconds * 1000, key="auto_refresh_main")
             st.markdown(f"""
             <div style="
-                background: var(--cyber-green);
+                background: #10b981;
                 color: white;
                 padding: 0.5rem;
                 border-radius: 6px;
@@ -732,7 +827,7 @@ def main():
                 if st.session_state.get('confirmar_reset', False):
                     st.markdown("""
                     <div style="
-                        background: var(--fire-orange);
+                        background: #f59e0b;
                         color: white;
                         padding: 0.5rem;
                         border-radius: 6px;
@@ -747,7 +842,43 @@ def main():
             st.markdown('</div>', unsafe_allow_html=True)
     
     # ============ CONTENIDO PRINCIPAL ============
+    # ============ CONTENIDO PRINCIPAL ============
     df = cargar_noticias()
+
+    # 🔥🔥🔥 LIMPIEZA NUCLEAR DE HTML - ESTO SÍ FUNCIONA 🔥🔥🔥
+    if not df.empty:
+        import html
+        import re
+        
+    def limpieza_nuclear(texto):
+        if pd.isna(texto) or not texto:
+            return ""
+        texto_str = str(texto)
+        
+        # ELIMINACIÓN COMPLETA DE HTML
+        texto_str = re.sub(r'<[^>]*>', '', texto_str)  # Elimina <cualquier_tag>
+        texto_str = re.sub(r'&[a-z]+;', '', texto_str)  # Elimina &nbsp; &amp; etc.
+        
+        # DECODIFICAR entidades HTML
+        texto_str = html.unescape(texto_str)
+        
+        # ELIMINAR caracteres especiales problemáticos
+        texto_str = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', texto_str)
+        
+        # LIMPIAR espacios y saltos de línea
+        texto_str = ' '.join(texto_str.split())
+        
+        return texto_str.strip()
+    
+    # APLICAR LIMPIEZA NUCLEAR
+        df['titulo'] = df['titulo'].apply(limpieza_nuclear)
+        df['contenido'] = df['contenido'].apply(limpieza_nuclear)
+        
+    # VERIFICAR en consola
+    print("✅ LIMPIEZA NUCLEAR APLICADA")
+    if not df.empty:
+        print(f"📰 Primer título: {df.iloc[0]['titulo'][:50]}")
+        print(f"📄 Primer contenido: {df.iloc[0]['contenido'][:50]}")
     
     # Mostrar notificaciones
     if 'nuevas_noticias' in st.session_state and st.session_state.nuevas_noticias > 0:
@@ -768,12 +899,12 @@ def main():
                 if busqueda or categoria != "Todas":
                     st.markdown(f"""
                     <div style="
-                        background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+                        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
                         padding: 1rem;
                         border-radius: 12px;
                         text-align: center;
                         margin: 1rem 0;
-                        box-shadow: var(--shadow-neon);
+                        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
                     ">
                         <span style="color: white; font-size: 1.1rem;">
                             📊 Mostrando <strong>{len(df_filtrado)}</strong> de <strong>{len(df)}</strong> noticias
@@ -787,25 +918,25 @@ def main():
                 <div style="
                     text-align: center;
                     padding: 4rem 2rem;
-                    background: linear-gradient(135deg, var(--charcoal), var(--rich-black));
+                    background: linear-gradient(135deg, #0f172a, #1e293b);
                     border-radius: 20px;
-                    border: 2px solid var(--dark-gray);
+                    border: 2px solid #475569;
                     margin: 2rem 0;
-                    box-shadow: var(--shadow-deep);
+                    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
                 ">
                     <div style="font-size: 5rem; margin-bottom: 1rem;">📰</div>
-                    <h2 style="color: var(--white); margin-bottom: 1rem;">¡Bienvenido a Pastor Noticias!</h2>
-                    <p style="color: var(--platinum); font-size: 1.1rem; margin-bottom: 2rem;">
+                    <h2 style="color: #f8fafc; margin-bottom: 1rem;">¡Bienvenido a Pastor Noticias!</h2>
+                    <p style="color: #cbd5e1; font-size: 1.1rem; margin-bottom: 2rem;">
                         Tu portal inteligente de noticias está listo para empezar
                     </p>
                     <div style="
-                        background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+                        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
                         color: white;
                         padding: 1rem 2rem;
                         border-radius: 12px;
                         display: inline-block;
                         font-weight: bold;
-                        box-shadow: var(--shadow-neon);
+                        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
                     ">
                         👈 Usa el botón "🔄 Obtener Noticias" en la barra lateral
                     </div>
@@ -824,18 +955,27 @@ def main():
                 <div style="
                     text-align: center;
                     padding: 3rem 2rem;
-                    background: var(--charcoal);
+                    background: #334155;
                     border-radius: 12px;
-                    border: 1px solid var(--dark-gray);
+                    border: 1px solid #475569;
                 ">
                     <div style="font-size: 4rem; margin-bottom: 1rem;">📚</div>
-                    <h3 style="color: var(--white);">Aún no hay lecturas registradas</h3>
-                    <p style="color: var(--platinum);">Comienza a leer noticias para ver estadísticas aquí</p>
+                    <h3 style="color: #f8fafc;">Aún no hay lecturas registradas</h3>
+                    <p style="color: #cbd5e1;">Comienza a leer noticias para ver estadísticas aquí</p>
                 </div>
                 """, unsafe_allow_html=True)
             
         elif current_view == "analisis":
             mostrar_dashboard_analisis(df)
+        
+        elif current_view == "admin":
+            # Verificar permisos antes de mostrar el dashboard admin
+            usuario_actual = st.session_state.get('usuario', {})
+            if usuario_actual and tiene_permiso_admin(usuario_actual.get('rol', '')):
+                mostrar_dashboard_admin()
+            else:
+                st.error("❌ No tienes permisos para acceder al Panel de Administración")
+                st.info("💡 Solo usuarios con rol 'admin' o 'super_admin' pueden acceder")
     
     # ============ FOOTER CON ESTADÍSTICAS ============
     st.markdown("---")
@@ -846,7 +986,7 @@ def main():
         st.markdown("""
         <div class="stats-card">
             <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
-            <div style="font-weight: bold; color: var(--white); font-size: 1.1rem;">Estado del Sistema</div>
+            <div style="font-weight: bold; color: #f8fafc; font-size: 1.1rem;">Estado del Sistema</div>
         """, unsafe_allow_html=True)
         
         if not df.empty:
@@ -854,7 +994,7 @@ def main():
             tiempo_ultima = pd.to_datetime(ultima_act).strftime("%H:%M - %d/%m")
             st.markdown(f"""
             <div style="
-                background: var(--cyber-green);
+                background: #10b981;
                 color: white;
                 padding: 0.75rem;
                 border-radius: 8px;
@@ -869,7 +1009,7 @@ def main():
         else:
             st.markdown("""
             <div style="
-                background: var(--golden-yellow);
+                background: #f59e0b;
                 color: white;
                 padding: 0.75rem;
                 border-radius: 8px;
@@ -888,20 +1028,20 @@ def main():
         st.markdown("""
         <div class="stats-card">
             <div style="font-size: 2rem; margin-bottom: 0.5rem;">📰</div>
-            <div style="font-weight: bold; color: var(--white); font-size: 1.1rem;">Base de Datos</div>
+            <div style="font-weight: bold; color: #f8fafc; font-size: 1.1rem;">Base de Datos</div>
         """, unsafe_allow_html=True)
         
         total_noticias = len(df)
         st.markdown(f"""
         <div style="
-            background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
             padding: 0.75rem;
             border-radius: 8px;
             text-align: center;
             margin-top: 0.5rem;
             font-weight: bold;
-            box-shadow: var(--shadow-neon);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         ">
             {total_noticias} noticias<br>
             <small>Disponibles</small>
@@ -914,7 +1054,7 @@ def main():
         st.markdown("""
         <div class="stats-card">
             <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
-            <div style="font-weight: bold; color: var(--white); font-size: 1.1rem;">Actividad Personal</div>
+            <div style="font-weight: bold; color: #f8fafc; font-size: 1.1rem;">Actividad Personal</div>
         """, unsafe_allow_html=True)
         
         total_lecturas = sum(st.session_state.lecturas.values())
@@ -923,7 +1063,7 @@ def main():
         if total_lecturas > 0 or total_favoritos > 0:
             st.markdown(f"""
             <div style="
-                background: var(--hot-pink);
+                background: #ec4899;
                 color: white;
                 padding: 0.75rem;
                 border-radius: 8px;
@@ -938,7 +1078,7 @@ def main():
         else:
             st.markdown("""
             <div style="
-                background: var(--silver);
+                background: #94a3b8;
                 color: white;
                 padding: 0.75rem;
                 border-radius: 8px;
@@ -959,24 +1099,24 @@ def main():
     <div style="
         text-align: center;
         padding: 1.5rem;
-        background: linear-gradient(135deg, var(--charcoal), var(--rich-black));
+        background: linear-gradient(135deg, #0f172a, #1e293b);
         border-radius: 12px;
-        border: 1px solid var(--dark-gray);
+        border: 1px solid #475569;
         margin-top: 2rem;
-        box-shadow: var(--shadow-deep);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
     ">
         <div style="font-size: 2rem; margin-bottom: 0.5rem;">💻</div>
-        <div style="color: var(--white); font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;">
+        <div style="color: #f8fafc; font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;">
             Pastor Noticias
         </div>
-        <div style="color: var(--platinum); font-size: 0.95rem;">
+        <div style="color: #cbd5e1; font-size: 0.95rem;">
             Sistema inteligente de gestión y análisis de noticias
         </div>
         <div style="
             margin-top: 1rem;
             padding-top: 1rem;
-            border-top: 1px solid var(--dark-gray);
-            color: var(--silver);
+            border-top: 1px solid #475569;
+            color: #94a3b8;
             font-size: 0.85rem;
         ">
             Desarrollado con ❤️ usando Streamlit

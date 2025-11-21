@@ -1,242 +1,269 @@
 import streamlit as st
 from pathlib import Path
 import plotly.io as pio
-import matplotlib.pyplot as pl
+import matplotlib.pyplot as plt
+
+import streamlit as st
+import os
+from pathlib import Path
 
 def load_css():
-    css_path = Path(__file__).parent / "styles.css"
-    if css_path.exists():
-        with open(css_path, encoding="utf-8") as f:
-            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    """Cargar el CSS desde el archivo styles.css"""
+    try:
+        # Obtener la ruta del directorio actual
+        current_dir = Path(__file__).parent
+        css_file = current_dir / "styles.css"
+        
+        # Verificar si el archivo existe
+        if css_file.exists():
+            with open(css_file, "r", encoding="utf-8") as f:
+                css_content = f.read()
+            
+            # Inyectar el CSS en Streamlit
+            st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+        else:
+            st.error(f"❌ Archivo CSS no encontrado: {css_file}")
+            # Cargar CSS de respaldo
+            _load_fallback_css()
+            
+    except Exception as e:
+        st.error(f"❌ Error cargando CSS: {e}")
+        _load_fallback_css()
 
+def _load_fallback_css():
+    """CSS de respaldo en caso de error"""
+    fallback_css = """
+    <style>
+    .main-header {
+        background: #1e293b;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        text-align: center;
+        margin: 2rem;
+        border: 2px solid #3b82f6;
+    }
+    
+    .main-header h1 {
+        color: #3b82f6;
+        font-size: 3rem;
+        font-weight: bold;
+    }
+    
+    .news-card {
+        background: #334155;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        border: 2px solid #475569;
+    }
+    </style>
+    """
+    st.markdown(fallback_css, unsafe_allow_html=True)
 
 
 def aplicar_tema():
-    """Activa modo claro/oscuro con transición suave y temas consistentes para gráficos."""
+    """Aplica el tema claro/oscuro de manera integral con gráficos y CSS variables"""
     oscuro = st.session_state.get("dark_mode", False)
-
-    # Configurar temas de gráficos según el modo
+    
+    # Configurar temas de gráficos
     if oscuro:
         pio.templates.default = "plotly_dark"
-        try:
-            plt.style.use("dark_background")
-        except Exception:
-            pass
+        plt.style.use("dark_background")
+        _aplicar_css_oscuro()
     else:
         pio.templates.default = "plotly_white"
-        try:
-            plt.style.use("seaborn-v0_8-whitegrid")  # Más limpio que 'default'
-        except Exception:
-            try:
-                plt.style.use("default")
-            except Exception:
-                pass
-    
-    # CSS unificado con modo oscuro/claro
-    st.markdown(f"""
+        plt.style.use("default")
+        _aplicar_css_claro()
+
+def _aplicar_css_oscuro():
+    """Aplica variables CSS para modo oscuro"""
+    css_oscuro = """
     <style>
-      /* ============ TRANSICIÓN SUAVE ============ */
-      .stApp, .news-card, .sidebar-section, .stats-card, .main-header {{
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }}
-      
-      /* ============ MODO {'OSCURO' if oscuro else 'CLARO'} ============ */
-      .stApp {{
-        /* Variables de color */
-        --primary-black: {'#0a0a0f' if oscuro else '#f8fafc'};
-        --rich-black:    {'#13131a' if oscuro else '#ffffff'};
-        --charcoal:      {'#1a1a24' if oscuro else '#f1f5f9'};
-        --dark-gray:     {'#2a2a38' if oscuro else '#e5e7eb'};
-        --medium-gray:   {'#3a3a4a' if oscuro else '#d1d5db'};
-        --light-gray:    {'#4a4a5c' if oscuro else '#9ca3af'};
-        --silver:        {'#6a6a7e' if oscuro else '#64748b'};
-        --platinum:      {'#8a8a9e' if oscuro else '#334155'};
-        --white:         {'#e8e8f0' if oscuro else '#0f172a'};
-        --off-white:     {'#f8f8fc' if oscuro else '#111827'};
+    :root {
+        /* Paleta de colores oscura - Vibrante y moderna */
+        --background-primary: #0f172a;
+        --background-secondary: #1e293b;
+        --background-card: #334155;
+        --background-elevated: #475569;
         
-        /* Acentos vibrantes (sin cambios) */
-        --neon-blue:       #00a3ff;
-        --electric-purple: #7c3aed;
-        --cyber-green:     #10b981;
-        --hot-pink:        #db2777;
-        --golden-yellow:   #d97706;
-        --fire-orange:     #f97316;
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
         
-        /* Sombras adaptativas */
-        --shadow-glow: {'0 0 20px rgba(0, 163, 255, 0.3)' if oscuro else '0 0 20px rgba(0, 163, 255, 0.15)'};
-        --shadow-deep: {'0 12px 24px -8px rgba(0,0,0,0.7)' if oscuro else '0 12px 24px -8px rgba(0,0,0,0.15)'};
-        --shadow-neon: {'0 0 12px rgba(0, 163, 255, 0.5), 0 0 24px rgba(124, 58, 237, 0.3)' if oscuro else '0 0 12px rgba(0, 163, 255, 0.25), 0 0 24px rgba(124, 58, 237, 0.15)'};
-        --shadow-cyber: {'0 0 18px rgba(16, 185, 129, 0.4)' if oscuro else '0 0 18px rgba(16, 185, 129, 0.2)'};
-        --shadow-fire: {'0 0 16px rgba(249, 115, 22, 0.4)' if oscuro else '0 0 16px rgba(249, 115, 22, 0.2)'};
-      }}
-      
-      /* ============ FONDOS BASE ============ */
-      html, body, .stApp {{
-        background: {'linear-gradient(135deg, var(--primary-black) 0%, var(--rich-black) 100%)' if oscuro else 'linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%)'} !important;
-        color: var(--{'white' if oscuro else 'off-white'}) !important;
-      }}
-      
-      /* ============ COMPONENTES ============ */
-      .news-card, .sidebar-section, .stats-card {{
-        background: {'linear-gradient(135deg, var(--charcoal) 0%, rgba(26, 26, 36, 0.95) 100%)' if oscuro else 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248, 250, 252, 0.9) 100%)'} !important;
-        border: 1px solid var(--dark-gray) !important;
-        box-shadow: var(--shadow-deep) !important;
-      }}
-      
-      .news-title {{
-        color: var(--{'white' if oscuro else 'off-white'}) !important;
-      }}
-      
-      .news-content {{
-        color: var(--{'platinum' if oscuro else 'platinum'}) !important;
-      }}
-      
-      .sidebar-title {{
-        -webkit-text-fill-color: {'transparent' if oscuro else 'initial'} !important;
-        color: var(--{'white' if oscuro else 'off-white'}) !important;
-        {'background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple)); -webkit-background-clip: text;' if oscuro else ''}
-      }}
-      
-      /* ============ HEADER ============ */
-      .main-header {{
-        background: {'linear-gradient(135deg, var(--charcoal) 0%, var(--rich-black) 100%)' if oscuro else 'linear-gradient(135deg, #ffffff 0%, #f3f6fb 100%)'} !important;
-        border: 1px solid var(--dark-gray) !important;
-        box-shadow: var(--shadow-deep) !important;
-      }}
-      
-      /* ============ SCROLLBAR ============ */
-      ::-webkit-scrollbar {{
-        width: 10px;
-        height: 10px;
-      }}
-      
-      ::-webkit-scrollbar-track {{
-        background: {'var(--primary-black)' if oscuro else '#eef2f7'};
-      }}
-      
-      ::-webkit-scrollbar-thumb {{
-        background: {'linear-gradient(180deg, var(--neon-blue), var(--electric-purple))' if oscuro else 'linear-gradient(180deg, #00a3ff, #7c3aed)'};
-        border-radius: 10px;
-        border: 2px solid {'var(--primary-black)' if oscuro else '#eef2f7'};
-        box-shadow: {'inset 0 0 6px rgba(0, 163, 255, 0.5)' if oscuro else 'inset 0 0 6px rgba(0, 163, 255, 0.25)'};
-      }}
-      
-      ::-webkit-scrollbar-thumb:hover {{
-        background: {'linear-gradient(180deg, var(--electric-purple), var(--hot-pink))' if oscuro else 'linear-gradient(180deg, #7c3aed, #db2777)'};
-      }}
-      
-      /* ============ ELEMENTOS DE STREAMLIT ============ */
-      .stSelectbox label, .stMultiSelect label, .stSlider label {{
-        color: var(--{'white' if oscuro else 'off-white'}) !important;
-      }}
-      
-      /* Input backgrounds */
-      .stSelectbox > div > div, .stMultiSelect > div > div {{
-        background-color: {'var(--charcoal)' if oscuro else '#ffffff'} !important;
-        color: var(--{'white' if oscuro else 'off-white'}) !important;
-        border-color: var(--dark-gray) !important;
-      }}
-      
-      /* Botones */
-      .stButton > button {{
-        background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple)) !important;
-        color: white !important;
-        border: none !important;
-        box-shadow: var(--shadow-neon) !important;
-        transition: all 0.3s ease !important;
-      }}
-      
-      .stButton > button:hover {{
-        box-shadow: 0 0 20px rgba(0, 163, 255, 0.6), 0 0 40px rgba(124, 58, 237, 0.4) !important;
-        transform: translateY(-2px) !important;
-      }}
+        --accent-primary: #3b82f6;
+        --accent-secondary: #8b5cf6;
+        --accent-tertiary: #06b6d4;
+        --accent-warning: #f59e0b;
+        --accent-error: #ef4444;
+        --accent-success: #10b981;
+        
+        --border-subtle: #475569;
+        --border-medium: #64748b;
+        --border-strong: #94a3b8;
+        
+        /* Sombras para modo oscuro */
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+        --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+    }
+    
+    /* Ajustes específicos para Streamlit en modo oscuro */
+    .stApp {
+        background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+        color: var(--text-primary);
+    }
+    
+    /* Mejora contraste en elementos de Streamlit */
+    .stButton > button {
+        background: var(--accent-primary);
+        color: white;
+        border: 2px solid var(--accent-primary);
+    }
+    
+    .stButton > button:hover {
+        background: #2563eb;
+        border-color: #2563eb;
+        transform: translateY(-2px);
+    }
+    
+    /* Inputs y selects */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div,
+    .stMultiselect > div > div {
+        background: var(--background-card);
+        color: var(--text-primary);
+        border: 2px solid var(--border-medium);
+    }
+    
+    /* Sidebar de Streamlit */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-primary) 100%);
+    }
+    
+    /* Progress bars */
+    .stProgress > div > div > div {
+        background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    }
     </style>
-    """, unsafe_allow_html=True)
-    oscuro = st.session_state.get("dark_mode", False)
+    """
+    st.markdown(css_oscuro, unsafe_allow_html=True)
 
-    if oscuro:
-        # Oscuro = tu CSS ya lo maneja. Solo aseguro gráficos oscuros.
-        pio.templates.default = "plotly_dark"
-        try:
-            plt.style.use("dark_background")
-        except Exception:
-            pass
-        # Opcional: sutil refuerzo del fondo para la app (no pisa tu CSS, solo acompaña)
-        st.markdown("""
-        <style>
-          .stApp { background: var(--primary-black) !important; }
-        </style>
-        """, unsafe_allow_html=True)
-    else:
-        # Claro = override de variables + fondos; no tocamos tu archivo, solo sobreescribimos aquí.
-        st.markdown("""
-        <style>
-          /* Variables en modo CLARO, mismas llaves que definen el look pero invertidas */
-          .stApp {
-            --primary-black: #f8fafc;       /* base clara */
-            --rich-black:   #ffffff;
-            --charcoal:     #f1f5f9;        /* cards claras */
-            --dark-gray:    #e5e7eb;        /* bordes claros */
-            --medium-gray:  #d1d5db;
-            --light-gray:   #9ca3af;
-            --silver:       #64748b;
-            --platinum:     #334155;
-            --white:        #0f172a;        /* texto oscuro */
-            --off-white:    #111827;
+def _aplicar_css_claro():
+    """Aplica variables CSS para modo claro con colores vibrantes"""
+    css_claro = """
+    <style>
+    :root {
+        /* Paleta de colores clara - Vibrante y energética */
+        --background-primary: #f8fafc;
+        --background-secondary: #ffffff;
+        --background-card: #ffffff;
+        --background-elevated: #f1f5f9;
+        
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        
+        --accent-primary: #3b82f6;
+        --accent-secondary: #8b5cf6;
+        --accent-tertiary: #06b6d4;
+        --accent-warning: #f59e0b;
+        --accent-error: #ef4444;
+        --accent-success: #10b981;
+        
+        --border-subtle: #e5e7eb;
+        --border-medium: #d1d5db;
+        --border-strong: #9ca3af;
+        
+        /* Sombras para modo claro */
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+        --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.25);
+    }
+    
+    /* Ajustes específicos para Streamlit en modo claro */
+    .stApp {
+        background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+        color: var(--text-primary);
+    }
+    
+    /* Header principal en modo claro */
+    .main-header {
+        background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-elevated) 100%) !important;
+        border: 2px solid var(--accent-primary) !important;
+        box-shadow: var(--shadow-lg) !important;
+    }
+    
+    .main-header h1 {
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+    }
+      
+    /* Botones en modo claro */
+    .stButton > button {
+        background: var(--accent-primary);
+        color: white;
+        border: 2px solid var(--accent-primary);
+        font-weight: 600;
+    }
+    
+    .stButton > button:hover {
+        background: #2563eb;
+        border-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    /* Sidebar sections en modo claro */
+    .sidebar-section {
+        background: linear-gradient(145deg, var(--background-card) 0%, var(--background-elevated) 100%) !important;
+        border: 2px solid var(--border-medium) !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+    
+    /* Inputs y selects en modo claro */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div,
+    .stMultiselect > div > div {
+        background: var(--background-card);
+        color: var(--text-primary);
+        border: 2px solid var(--border-medium);
+        border-radius: 8px;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stSelectbox > div > div:focus,
+    .stMultiselect > div > div:focus {
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+    
+    /* Progress bars en modo claro */
+    .stProgress > div > div > div {
+        background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    }
+    
+    /* Toggle switch styling */
+    .stCheckbox > div > label {
+        color: var(--text-primary) !important;
+    }
+    
+    /* Mejoras de contraste para texto */
+    .stMarkdown, .stText, .stTitle {
+        color: var(--text-primary) !important;
+    }
+    </style>
+    """
+    st.markdown(css_claro, unsafe_allow_html=True)
 
-            /* mantengo tus acentos vibrantes */
-            --neon-blue:       #00a3ff;
-            --electric-purple: #7c3aed;
-            --cyber-green:     #10b981;
-            --hot-pink:        #db2777;
-            --golden-yellow:   #d97706;
-            --fire-orange:     #f97316;
+def toggle_tema():
+    """Función para cambiar el tema y rerenderizar"""
+    st.session_state.dark_mode = not st.session_state.get("dark_mode", False)
+    st.rerun()
 
-            /* sombras suavizadas para claro */
-            --shadow-glow: 0 0 20px rgba(0, 163, 255, 0.15);
-            --shadow-deep: 0 12px 24px -8px rgba(0,0,0,0.15);
-            --shadow-neon: 0 0 12px rgba(0, 163, 255, 0.25), 0 0 24px rgba(124, 58, 237, 0.15);
-            --shadow-cyber: 0 0 18px rgba(16, 185, 129, 0.2);
-            --shadow-fire: 0 0 16px rgba(249, 115, 22, 0.2);
-          }
-
-          /* Fondo claro para body y contenedor principal */
-          html, body, .stApp {
-            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%) !important;
-            color: var(--off-white) !important;
-          }
-
-          /* Cartas y sidebar en claro aprovechando tu misma maqueta */
-          .news-card, .sidebar-section, .stats-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248, 250, 252, 0.9) 100%) !important;
-            border: 1px solid var(--dark-gray) !important;
-            box-shadow: var(--shadow-deep) !important;
-          }
-
-          .news-title { color: var(--off-white) !important; }
-          .news-content { color: var(--platinum) !important; }
-          .sidebar-title { -webkit-text-fill-color: initial !important; color: var(--off-white) !important; }
-
-          /* Header claro manteniendo efectos */
-          .main-header {
-            background: linear-gradient(135deg, #ffffff 0%, #f3f6fb 100%) !important;
-            border: 1px solid var(--dark-gray) !important;
-            box-shadow: var(--shadow-deep) !important;
-          }
-
-          /* Scrollbar claro */
-          ::-webkit-scrollbar-track { background: #eef2f7; }
-          ::-webkit-scrollbar-thumb {
-            border: 2px solid #eef2f7;
-            box-shadow: inset 0 0 6px rgba(0, 163, 255, 0.25);
-          }
-        </style>
-        """, unsafe_allow_html=True)
-
-        # Plotly y Matplotlib claros
-        pio.templates.default = "plotly"
-        try:
-            plt.style.use("default")
-        except Exception:
-            pass
-
+def get_tema_actual():
+    """Retorna el tema actual como string"""
+    return "dark" if st.session_state.get("dark_mode", False) else "light"

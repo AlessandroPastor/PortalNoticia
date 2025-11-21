@@ -8,9 +8,8 @@ def barra_busqueda_avanzada(df):
     
     with col1:
         busqueda = st.text_input(
-            "",
-            placeholder="Buscar por título, contenido o categoría...",
-            key="search_advanced",
+            "Buscar noticias...",
+            placeholder="🔍 Buscar en títulos y contenido...", 
             label_visibility="collapsed"
         )
     

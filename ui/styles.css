@@ -168,59 +168,6 @@ html, body {
     letter-spacing: 0.01em;
 }
 
-/* Cards de noticias con efectos holográficos */
-.news-card {
-    background: linear-gradient(135deg, rgba(13, 17, 23, 0.9) 0%, rgba(33, 38, 45, 0.95) 100%);
-    backdrop-filter: blur(20px) saturate(180%);
-    padding: var(--spacing-2xl);
-    border-radius: var(--radius-xl);
-    margin-bottom: var(--spacing-xl);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-deep);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    isolation: isolate;
-}
-
-.news-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
-    transition: left 0.8s ease;
-    z-index: -1;
-}
-
-.news-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--gradient-neon);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-    transform-origin: left;
-}
-
-.news-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: var(--shadow-neon), var(--shadow-deep);
-    border-color: rgba(0, 212, 255, 0.3);
-}
-
-.news-card:hover::before {
-    left: 100%;
-}
-
-.news-card:hover::after {
-    transform: scaleX(1);
-}
 
 /* Etiquetas de categoría con efectos neón */
 .category-tag {
@@ -307,19 +254,22 @@ html, body {
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
 }
 
-/* Contenido con mejor legibilidad */
 .news-content {
-    font-family: 'Inter', sans-serif;
-    color: var(--platinum);
-    line-height: 1.8;
-    margin-bottom: var(--spacing-xl);
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0.01em;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #555;
+    max-height: 60px;
+    overflow: hidden;
 }
 
 .news-content p {
-    margin-bottom: var(--spacing-lg);
+    margin: 0;
+}
+
+.no-content {
+    color: #888;
+    font-style: italic;
 }
 
 /* Sistema de botones ultra futuristas */
@@ -709,4 +659,706 @@ button:focus,
 @keyframes focus-glow {
     from { box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.5), 0 0 0 6px rgba(124, 58, 237, 0.2); }
     to { box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.7), 0 0 0 8px rgba(124, 58, 237, 0.3); }
+}
+
+/* ==================== SISTEMA DE GRID ==================== */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+    padding: var(--spacing-lg);
+}
+
+/* ==================== CARDS PRINCIPALES ==================== */
+/* Asegurar que las cards se muestren correctamente sin wrappers adicionales */
+.news-card {
+    display: flex !important;
+    flex-direction: column !important;
+    background: linear-gradient(135deg, 
+        rgba(15, 23, 42, 0.95) 0%, 
+        rgba(30, 41, 59, 0.98) 50%,
+        rgba(51, 65, 85, 0.95) 100%) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    padding: 1.5rem !important;
+    border-radius: 20px !important;
+    border: 2px solid rgba(59, 130, 246, 0.2) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(59, 130, 246, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    isolation: isolate !important;
+    height: 100% !important;
+    min-height: 480px !important;
+    margin-bottom: 1.5rem !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Resetear estilos heredados de Streamlit para la card */
+.news-card * {
+    box-sizing: border-box;
+}
+
+.news-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -50% !important;
+    left: -50% !important;
+    width: 200% !important;
+    height: 200% !important;
+    background: radial-gradient(
+        circle,
+        rgba(59, 130, 246, 0.15) 0%,
+        rgba(139, 92, 246, 0.1) 25%,
+        rgba(236, 72, 153, 0.05) 50%,
+        transparent 100%
+    ) !important;
+    animation: card-glow 8s ease-in-out infinite !important;
+    z-index: -2 !important;
+    pointer-events: none !important;
+}
+
+@keyframes card-glow {
+    0%, 100% { 
+        transform: scale(1) rotate(0deg); 
+        opacity: 0.5; 
+    }
+    50% { 
+        transform: scale(1.2) rotate(180deg); 
+        opacity: 0.8; 
+    }
+}
+
+.news-card::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(59, 130, 246, 0.2),
+        rgba(139, 92, 246, 0.3),
+        rgba(59, 130, 246, 0.2),
+        transparent
+    ) !important;
+    transition: left 1s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+.news-card:hover {
+    transform: translateY(-12px) scale(1.03) rotateX(2deg) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(59, 130, 246, 0.4),
+        0 0 80px rgba(139, 92, 246, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(59, 130, 246, 0.6) !important;
+    background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 0.98) 0%, 
+        rgba(51, 65, 85, 0.98) 50%,
+        rgba(71, 85, 105, 0.98) 100%) !important;
+}
+
+.news-card:hover::before {
+    opacity: 1;
+    animation-duration: 4s;
+}
+
+.news-card:hover::after {
+    left: 100%;
+}
+
+/* ==================== COMPONENTES DE CARD ==================== */
+
+/* Imágenes de cards */
+.card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.news-card:hover .card-img {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-glow);
+}
+
+.news-image-wrapper {
+    width: 100%;
+    height: 200px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+    position: relative;
+}
+
+.news-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.news-card:hover .news-image {
+    transform: scale(1.05);
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+    border: 2px dashed var(--medium-gray);
+    color: var(--silver);
+}
+
+.placeholder-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.5;
+}
+
+.placeholder-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #64748b;
+}
+
+/* Etiquetas de categoría - Base - dentro de cards */
+.news-card .category-tag {
+    color: white !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 16px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    display: inline-block !important;
+    margin: 0 0 1rem 0 !important;
+    padding: 0.5rem 1rem !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Colores específicos por categoría usando clases CSS */
+.category-policial {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+}
+
+.category-politica {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+}
+
+.category-economia {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+}
+
+.category-deportes {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
+
+.category-espectaculos {
+    background: linear-gradient(135deg, #ec4899, #db2777) !important;
+}
+
+.category-tecnologia {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+}
+
+.category-general {
+    background: linear-gradient(135deg, #64748b, #475569) !important;
+}
+
+.category-tag:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 40px currentColor;
+    animation: neon-flicker 0.1s infinite alternate;
+}
+
+@keyframes neon-flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* Títulos de noticias mejorados */
+.news-card .news-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.3;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    letter-spacing: -0.01em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.news-card .news-title:hover {
+    background: linear-gradient(135deg, 
+        #60a5fa 0%,
+        #a78bfa 50%,
+        #f472b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateX(5px) scale(1.02);
+    filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.6));
+}
+
+/* Metadata mejorada - dentro de cards */
+.news-card .news-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    margin: 0 0 1.5rem 0 !important;
+    padding: 0 !important;
+    flex-wrap: wrap !important;
+}
+
+.news-meta span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.85rem;
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.news-meta span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.news-meta span:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 20px currentColor;
+}
+
+.news-meta span:hover::before {
+    left: 100%;
+}
+
+/* Estilos específicos para cada tipo de meta - dentro de cards */
+.news-card .news-meta .meta-time {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1)) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+    color: #93c5fd !important;
+}
+
+.news-card .news-meta .meta-views {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #6ee7b7 !important;
+}
+
+.news-card .news-meta .meta-source {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1)) !important;
+    border-color: rgba(139, 92, 246, 0.3) !important;
+    color: #c4b5fd !important;
+}
+
+/* Contenido de noticias mejorado - dentro de cards */
+.news-card .news-content {
+    font-family: 'Inter', sans-serif !important;
+    color: #cbd5e1 !important;
+    line-height: 1.8 !important;
+    margin: 0 0 1.5rem 0 !important;
+    padding: 0 !important;
+    font-size: 0.95rem !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.01em !important;
+    flex-grow: 1 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+    opacity: 0.95 !important;
+}
+
+.news-content p {
+    margin-bottom: 0;
+    opacity: 0.95;
+}
+
+/* ==================== CONTENEDOR DE BOTONES ==================== */
+/* Los botones están fuera de la card, pero necesitamos un contenedor */
+.card-buttons-container {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-sm);
+    width: 100%;
+}
+
+/* ==================== BOTONES DE CARDS ==================== */
+.card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: var(--spacing-sm);
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn {
+    font-family: 'JetBrains Mono', monospace;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    isolation: isolate;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 
+        0 4px 14px rgba(59, 130, 246, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 8px 24px rgba(59, 130, 246, 0.6),
+        0 0 40px rgba(59, 130, 246, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(59, 130, 246, 0.7);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));
+    color: #c4b5fd;
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: white;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 8px 24px rgba(139, 92, 246, 0.5),
+        0 0 40px rgba(139, 92, 246, 0.3);
+    border-color: rgba(139, 92, 246, 0.6);
+}
+
+.btn-icon {
+    background: transparent;
+    color: var(--silver);
+    border: 1px solid var(--medium-gray);
+    padding: var(--spacing-sm);
+    min-width: auto;
+}
+
+.btn-icon:hover {
+    background: var(--gradient-gold);
+    color: var(--primary-black);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+/* ==================== CARDS COMPACTAS ==================== */
+.compact-card {
+    background: linear-gradient(135deg, rgba(13, 17, 23, 0.8) 0%, rgba(33, 38, 45, 0.9) 100%);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--spacing-sm);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.compact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.compact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.compact-category {
+    background: var(--gradient-cyber);
+    color: var(--primary-black);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.compact-time {
+    font-size: 0.7rem;
+    color: var(--silver);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.compact-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.compact-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--silver);
+}
+
+.compact-views {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.compact-fav {
+    color: var(--golden-yellow);
+}
+
+/* ==================== COMPONENTES ADICIONALES ==================== */
+
+/* Contador de resultados */
+.result-count {
+    background: linear-gradient(135deg, rgba(13, 17, 23, 0.9) 0%, rgba(33, 38, 45, 0.8) 100%);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    margin: var(--spacing-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    color: var(--platinum);
+}
+
+/* Información de paginación */
+.pagination-info {
+    text-align: center;
+    margin: 0.5rem 0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.result-count strong {
+    color: var(--neon-blue);
+    font-weight: 700;
+}
+
+/* Estados vacíos */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: linear-gradient(135deg, rgba(13, 17, 23, 0.8) 0%, rgba(33, 38, 45, 0.6) 100%);
+    border: 2px dashed rgba(0, 212, 255, 0.3);
+    border-radius: var(--radius-xl);
+    margin: var(--spacing-xl);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: icon-float 3s ease-in-out infinite;
+}
+
+@keyframes icon-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: var(--spacing-md);
+    }
+    
+    .news-card {
+        padding: var(--spacing-lg);
+        min-height: 420px;
+    }
+    
+    .card-actions {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .news-title {
+        font-size: 1.2rem;
+    }
+    
+    .card-img,
+    .news-image-wrapper,
+    .image-placeholder {
+        height: 160px;
+    }
+    
+    .news-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .news-card {
+        min-height: 380px;
+        padding: var(--spacing-md);
+    }
+}
+
+/* Scrollbar para cards */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--rich-black);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-neon);
+    border-radius: 4px;
+    border: 1px solid var(--rich-black);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gradient-cyber);
+}
+
+/* Loading skeleton para cards */
+.loading-skeleton {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.05) 25%, 
+        rgba(0, 212, 255, 0.1) 50%, 
+        rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-glow 2s infinite;
+    border-radius: var(--radius-md);
+    height: 1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+@keyframes skeleton-glow {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Focus states para accesibilidad */
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.5);
+}
+
+/* Reducir movimiento para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .news-card,
+    .btn,
+    .category-tag,
+    .compact-card {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
 }

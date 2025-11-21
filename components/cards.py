@@ -1,264 +1,321 @@
+import logging
+import html as html_lib
+import re
+import time
+from datetime import datetime, timezone
+from urllib.parse import urlparse
+
 import streamlit as st
 import pandas as pd
-from datetime import datetime
-import time
-from .notifications import mostrar_toast
+from bs4 import BeautifulSoup
+
+from components.notifications import mostrar_toast
 from utils.helpers import registrar_lectura
-## ubicacion de components/cards.py aqui es todo porfavor 
-def mostrar_grid_noticias(df_filtrado, noticias_por_pagina=9):
-    """Grid de noticias con mejor layout responsivo"""
-    if df_filtrado.empty:
-        st.markdown("""
-        <div class="empty-state">
-            <div class="empty-state-icon">📰</div>
-            <h3>No se encontraron noticias</h3>
-            <p>Intenta ajustar tus filtros de búsqueda</p>
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def calcular_tiempo_relativo(fecha_scraping):
+    """Calcula tiempo relativo desde fecha de scraping."""
+    try:
+        if not fecha_scraping:
+            return "Reciente"
+        fecha = pd.to_datetime(fecha_scraping)
+        diff = datetime.now() - fecha
+
+        if diff.days > 30:
+            m = diff.days // 30
+            return f"{m} mes{'es' if m > 1 else ''}"
+        if diff.days > 0:
+            return f"{diff.days} día{'s' if diff.days > 1 else ''}"
+        h = diff.seconds // 3600
+        if h > 0:
+            return f"{h} hora{'s' if h > 1 else ''}"
+        m = diff.seconds // 60
+        if m > 0:
+            return f"{m} min"
+        return "Ahora"
+    except:
+        return "Reciente"
+
+def obtener_fuente(url):
+    """Extrae dominio legible desde una URL."""
+    try:
+        if not url:
+            return "Desconocida"
+        host = urlparse(url).netloc.replace("www.", "")
+        return host.split('.')[0].title() if '.' in host else host
+    except Exception:
+        return "Desconocida"
+
+def toggle_favorito(nid, es_fav):
+    """Alterna favorito en session_state."""
+    try:
+        if "favoritos" not in st.session_state:
+            st.session_state.favoritos = set()
+        if es_fav:
+            st.session_state.favoritos.discard(nid)
+            mostrar_toast("❌ Eliminado de favoritos", "warning")
+        else:
+            st.session_state.favoritos.add(nid)
+            mostrar_toast("⭐ Agregado a favoritos", "success")
+    except Exception as e:
+        logger.error(f"Error toggling favorito: {e}")
+        mostrar_toast("❌ Error al actualizar favoritos", "error")
+
+def limpiar_contenido_html(texto):
+    """Limpia contenido HTML y siempre retorna string (sin tags peligrosos)."""
+    try:
+        if texto is None:
+            return ""
+        if not isinstance(texto, str):
+            texto = str(texto)
+        texto = texto.strip()
+        if not texto:
+            return ""
+        
+        # Si no tiene tags HTML, retornar directamente
+        if '<' not in texto and '>' not in texto:
+            return texto
+            
+        texto = html_lib.unescape(texto)
+        soup = BeautifulSoup(texto, "html.parser")
+        
+        # Eliminar elementos no deseados
+        for tag in soup.find_all(["script", "style", "img", "picture", "figure", "iframe"]):
+            tag.decompose()
+        
+        # Quitar atributos peligrosos
+        for el in soup.find_all(True):
+            for attr in list(el.attrs):
+                if attr.lower().startswith("on") or attr.lower() in ("style", "srcset"):
+                    del el.attrs[attr]
+        
+        texto_limpio = soup.get_text(" ", strip=True)
+        return texto_limpio or ""
+        
+    except Exception as e:
+        logger.exception("Error limpiando HTML")
+        return re.sub(r"<[^>]+>", "", str(texto) or "")
+
+def mostrar_card_noticia_mejorada(noticia):
+    """Muestra una card única y robusta para una noticia (versión corregida)."""
+    try:
+        if noticia is None:
+            st.warning("Noticia vacía")
+            return
+
+        # Asegurar session_state básicos
+        if "favoritos" not in st.session_state:
+            st.session_state.favoritos = set()
+        if "lecturas" not in st.session_state:
+            st.session_state.lecturas = {}
+
+        nid = noticia.get("id") or noticia.get("id_noticia")
+        if nid is None:
+            logger.warning("Noticia sin ID, saltando")
+            return
+
+        es_favorito = nid in st.session_state.favoritos
+        lecturas = st.session_state.lecturas.get(nid, 0)
+
+        # TÍTULO CORREGIDO - SIN html_lib.escape
+        titulo = str(noticia.get("titulo") or "Sin título")
+        titulo_limpio = limpiar_contenido_html(titulo)
+        titulo_html = titulo_limpio[:400]  # SIN ESCAPE
+
+        # IMAGEN
+        imagen = noticia.get("imagen") or noticia.get("imagen_url") or ""
+        if imagen and isinstance(imagen, str) and imagen not in [None, "None", ""]:
+            imagen_esc = html_lib.escape(imagen)
+            imagen_html = f"""
+            <div class="news-image-wrapper">
+                <img src="{imagen_esc}" class="news-image" alt="Imagen noticia" loading="lazy" />
+            </div>
+            """
+        else:
+            imagen_html = """
+            <div class="image-placeholder">
+                <div class="placeholder-icon">📰</div>
+                <div class="placeholder-text">Sin imagen</div>
+            </div>
+            """
+
+        # CONTENIDO CORREGIDO - SIN html_lib.escape
+        contenido_raw = noticia.get("contenido") or noticia.get("resumen") or ""
+        contenido_limpio = limpiar_contenido_html(contenido_raw)
+        
+        if contenido_limpio and contenido_limpio.strip():
+            resumen = contenido_limpio[:220] + "..." if len(contenido_limpio) > 220 else contenido_limpio
+            contenido_html = f'<div class="news-content">{resumen}</div>'  # SIN ESCAPE
+        else:
+            contenido_html = '<div class="news-content no-content">Sin contenido disponible</div>'
+
+        # CATEGORIA CORREGIDA - SIN html_lib.escape
+        categoria = noticia.get("categoria") or "General"
+        cat_slug = re.sub(r"[^a-z0-9]+", "-", str(categoria).lower()).strip("-")
+        categoria_class = f"category-{cat_slug}" if cat_slug else "category-general"
+        categoria_html = str(categoria)  # SIN ESCAPE
+
+        # TIEMPO Y FUENTE
+        tiempo_str = calcular_tiempo_relativo(noticia.get("fecha_scraping"))
+        fuente = obtener_fuente(noticia.get("url_original"))
+
+        # CARD HTML CORREGIDA
+        card_html = f"""
+        <div class="news-card">
+            <div class="category-tag {categoria_class}">{categoria_html}</div>
+            {imagen_html}
+            <h3 class="news-title">{titulo_html}</h3>
+            <div class="news-meta">
+                <span class="meta-time">⏰ {tiempo_str}</span>
+                <span class="meta-views">👁️ {lecturas}</span>
+                <span class="meta-source">📰 {fuente}</span>
+            </div>
+            {contenido_html}
         </div>
-        """, unsafe_allow_html=True)
-        return
-    
-    # Contador de resultados
-    st.markdown(f"""
-    <div class="result-count">
-        📄 Se encontraron <strong>{len(df_filtrado)}</strong> noticias
-        {f"en {df_filtrado['categoria'].nunique()} categorías" if not df_filtrado.empty else ''}
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Controles de visualización
-    col1, col2, col3 = st.columns([2, 1, 1])
-    with col2:
-        # Opción para cambiar entre vista normal y compacta
-        vista_compacta = st.toggle("📱 Vista compacta", value=False, 
-                                 help="Mostrar más noticias en menos espacio")
-    
-    with col3:
-        # Opción para ordenar
-        orden = st.selectbox(
-            "Ordenar por",
-            ["Más recientes", "Más leídas", "A-Z"],
-            key="orden_noticias"
-        )
-    
-    # Aplicar ordenamiento
-    if orden == "Más recientes":
-        df_filtrado = df_filtrado.sort_values('fecha_scraping', ascending=False)
-    elif orden == "Más leídas":
-        df_filtrado = df_filtrado.copy()
-        df_filtrado['_lecturas'] = df_filtrado['id'].apply(
-            lambda x: st.session_state.lecturas.get(x, 0)
-        )
-        df_filtrado = df_filtrado.sort_values('_lecturas', ascending=False)
-    elif orden == "A-Z":
-        df_filtrado = df_filtrado.sort_values('titulo')
-    
-    # Ajustar número de noticias por página según la vista
-    noticias_por_pagina = 12 if vista_compacta else 9
-    
-    # Paginación mejorada
-    total_noticias = len(df_filtrado)
-    total_paginas = max(1, (total_noticias - 1) // noticias_por_pagina + 1)
-    
-    if total_paginas > 1:
-        col1, col2, col3 = st.columns([1, 2, 1])
+        """
+
+        st.markdown(card_html, unsafe_allow_html=True)
+
+        # BOTONES DE ACCIÓN
+        col1, col2, col3 = st.columns([2, 2, 1])
+        
+        with col1:
+            if st.button("📖 Leer", key=f"leer_{nid}", use_container_width=True):
+                st.session_state.noticia_seleccionada = nid
+                try:
+                    registrar_lectura(nid)
+                except Exception as e:
+                    logger.error(f"Error registrando lectura: {e}")
+                st.rerun()
+
         with col2:
-            pagina_actual = st.selectbox(
-                "Navegar por páginas",
-                range(1, total_paginas + 1),
-                format_func=lambda x: f"Página {x} ({((x-1)*noticias_por_pagina)+1}-{min(x*noticias_por_pagina, total_noticias)} de {total_noticias})",
-                key="pagination_main"
-            )
+            fav_text = "💝 Quitar" if es_favorito else "🤍 Fav"
+            if st.button(fav_text, key=f"fav_{nid}", use_container_width=True):
+                toggle_favorito(nid, es_favorito)
+                st.rerun()
+
+        with col3:
+            url_original = noticia.get("url_original")
+            if url_original and st.button("🔗", key=f"link_{nid}", use_container_width=True):
+                st.markdown(f'<a href="{html_lib.escape(url_original)}" target="_blank" style="display:none;">Link</a>', unsafe_allow_html=True)
+                mostrar_toast("🌐 Abriendo enlace original...", "info")
+
+    except Exception as e:
+        logger.exception("Error mostrando card de noticia")
+        st.error(f"Error mostrando noticia: {str(e)}")
+
+def mostrar_grid_noticias(df_filtrado: pd.DataFrame, noticias_por_pagina=9):
+    """Muestra un grid simple con paginación básica."""
+    try:    
+        if df_filtrado is None:
+            st.info("No hay datos para mostrar")
+            return
         
-        inicio = (pagina_actual - 1) * noticias_por_pagina
-        fin = min(inicio + noticias_por_pagina, total_noticias)
+        if not isinstance(df_filtrado, pd.DataFrame):
+            try:
+                df_filtrado = pd.DataFrame(df_filtrado)
+            except Exception:   
+                st.info("No hay noticias para mostrar")
+                return
+
+        if df_filtrado.empty:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="empty-state-icon">📰</div>
+                <h3>No se encontraron noticias</h3>
+                <p>Intenta ajustar tus filtros de búsqueda</p>
+            </div>
+            """, unsafe_allow_html=True)
+            return
+
+        # Paginación
+        if "pagina_noticias" not in st.session_state:
+            st.session_state.pagina_noticias = 1
+
+        total = len(df_filtrado)
+        total_pag = max(1, (total - 1) // noticias_por_pagina + 1)
+        pagina = max(1, min(st.session_state.pagina_noticias, total_pag))
+
+        inicio = (pagina - 1) * noticias_por_pagina
+        fin = inicio + noticias_por_pagina
         df_pagina = df_filtrado.iloc[inicio:fin]
-        
-        # Indicador de paginación
+
         st.markdown(f"""
-        <div style="text-align: center; margin: 0.5rem 0; color: #666; font-size: 0.9rem;">
-            Mostrando noticias {inicio + 1}-{fin} de {total_noticias}
+        <div style="text-align: center; margin: 1rem 0; padding: 1rem; background: #1e293b; border-radius: 8px;">
+            <span style="color: #f8fafc;">📄 Se encontraron <strong>{total}</strong> noticias</span>
         </div>
         """, unsafe_allow_html=True)
-    else:
-        df_pagina = df_filtrado.head(noticias_por_pagina)
-    
-    # Grid responsivo adaptativo
-    columnas_por_fila = 4 if vista_compacta else 3
-    
-    for i in range(0, len(df_pagina), columnas_por_fila):
-        cols = st.columns(columnas_por_fila, gap="medium")
-        for j in range(columnas_por_fila):
-            if i + j < len(df_pagina):
-                noticia = df_pagina.iloc[i + j]
-                with cols[j]:
-                    if vista_compacta:
-                        mostrar_card_compacta(noticia)
-                    else:
-                        mostrar_card_noticia_mejorada(noticia)
+
+        # Grid de 3 columnas
+        cols = st.columns(3)
+        for idx, row in enumerate(df_pagina.to_dict(orient="records")):
+            col = cols[idx % 3]
+            with col:
+                mostrar_card_noticia_mejorada(row)
+
+        # Controles de paginación
+        if total_pag > 1:
+            st.markdown("---")
+            col_prev, col_info, col_next = st.columns([1, 2, 1])
+            with col_prev:
+                if st.button("◀ Anterior", use_container_width=True, disabled=(pagina <= 1)):
+                    st.session_state.pagina_noticias = max(1, pagina - 1)
+                    st.rerun()
+            with col_info:
+                st.markdown(f"<div style='text-align: center; color: #64748b;'>Página {pagina} de {total_pag}</div>", unsafe_allow_html=True)
+            with col_next:
+                if st.button("Siguiente ▶", use_container_width=True, disabled=(pagina >= total_pag)):
+                    st.session_state.pagina_noticias = min(total_pag, pagina + 1)
+                    st.rerun()
+
+    except Exception as e:
+        logger.exception("Error mostrando grid de noticias")
+        st.error(f"Error al mostrar noticias: {str(e)}")
 
 def mostrar_card_compacta(noticia):
-    """Versión compacta de la card para vista de lista"""
-    es_favorito = noticia['id'] in st.session_state.favoritos
-    lecturas = st.session_state.lecturas.get(noticia['id'], 0)
-    
-    # Calcular tiempo relativo
+    """Card compacta para listas."""
     try:
-        fecha_scraping = pd.to_datetime(noticia['fecha_scraping'])
-        tiempo_transcurrido = datetime.now() - fecha_scraping
-        if tiempo_transcurrido.days > 0:
-            tiempo_str = f"{tiempo_transcurrido.days}d"
-        elif tiempo_transcurrido.seconds > 3600:
-            tiempo_str = f"{tiempo_transcurrido.seconds // 3600}h"
-        else:
-            tiempo_str = f"{tiempo_transcurrido.seconds // 60}m"
-    except:
-        tiempo_str = "1d"
-    
-    # Card compacta
-    with st.container():
+        nid = noticia.get("id")
+        if nid is None:
+            return
+
+        es_fav = nid in st.session_state.favoritos
+        lecturas = st.session_state.lecturas.get(nid, 0)
+        tiempo_str = calcular_tiempo_relativo(noticia.get("fecha_scraping"))
+
+        # TÍTULO CORREGIDO - SIN html_lib.escape
+        titulo = str(noticia.get("titulo") or "Sin título")
+        titulo_limpio = limpiar_contenido_html(titulo)
+        titulo_corto = titulo_limpio[:70] + "..." if len(titulo_limpio) > 70 else titulo_limpio
+
         st.markdown(f"""
         <div class="compact-card">
             <div class="compact-header">
                 <span class="compact-category">{noticia.get('categoria', 'General')}</span>
                 <span class="compact-time">⏰ {tiempo_str}</span>
             </div>
-            <h5 class="compact-title" title="{noticia['titulo']}">
-                {noticia['titulo'][:70]}{'...' if len(noticia['titulo']) > 70 else ''}
-            </h5>
+            <h5 class="compact-title">{titulo_corto}</h5>
             <div class="compact-footer">
-                <span class="compact-views">👁️ {lecturas}</span>
-                <span class="compact-fav">{'⭐' if es_favorito else '☆'}</span>
+                <span>👁️ {lecturas}</span>
+                <span>{'⭐' if es_fav else '☆'}</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Botones compactos
+
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("📖", key=f"leer_compact_{noticia['id']}", 
-                        use_container_width=True, help="Leer noticia completa"):
-                st.session_state.noticia_seleccionada = noticia['id']
-                registrar_lectura(noticia['id'])
+            if st.button("📖 Leer", key=f"compact_read_{nid}", use_container_width=True):
+                registrar_lectura(nid)
+                st.session_state.noticia_seleccionada = nid
                 st.rerun()
-        
         with col2:
-            fav_icon = "💝" if es_favorito else "🤍"
-            if st.button(fav_icon, key=f"fav_compact_{noticia['id']}", 
-                        use_container_width=True, help="Agregar a favoritos"):
-                if es_favorito:
-                    st.session_state.favoritos.remove(noticia['id'])
-                    mostrar_toast("❌ Eliminado de favoritos", "warning")
-                else:
-                    st.session_state.favoritos.add(noticia['id'])
-                    mostrar_toast("✅ Agregado a favoritos", "success")
-                time.sleep(0.3)
+            icon = "💝" if es_fav else "🤍"
+            if st.button(icon, key=f"compact_fav_{nid}", use_container_width=True):
+                toggle_favorito(nid, es_fav)
                 st.rerun()
 
-def mostrar_card_noticia_mejorada(noticia):
-    """Card de noticia con mejor diseño y UX - VERSIÓN MEJORADA"""
-    es_favorito = noticia['id'] in st.session_state.favoritos
-    lecturas = st.session_state.lecturas.get(noticia['id'], 0)
-    
-    # Calcular tiempo relativo mejorado
-    try:
-        fecha_scraping = pd.to_datetime(noticia['fecha_scraping'])
-        tiempo_transcurrido = datetime.now() - fecha_scraping
-        
-        if tiempo_transcurrido.days > 30:
-            meses = tiempo_transcurrido.days // 30
-            tiempo_str = f"{meses} mes{'es' if meses > 1 else ''}"
-        elif tiempo_transcurrido.days > 0:
-            tiempo_str = f"{tiempo_transcurrido.days} día{'s' if tiempo_transcurrido.days > 1 else ''}"
-        elif tiempo_transcurrido.seconds > 3600:
-            horas = tiempo_transcurrido.seconds // 3600
-            tiempo_str = f"{horas} hora{'s' if horas > 1 else ''}"
-        elif tiempo_transcurrido.seconds > 60:
-            minutos = tiempo_transcurrido.seconds // 60
-            tiempo_str = f"{minutos} min"
-        else:
-            tiempo_str = "Ahora"
-    except:
-        tiempo_str = "Reciente"
-    
-    # Obtener fuente del URL si está disponible
-    fuente = "Noticia"
-    if noticia.get('url_original'):
-        try:
-            from urllib.parse import urlparse
-            dominio = urlparse(noticia['url_original']).netloc
-            fuente = dominio.replace('www.', '').split('.')[0].title()
-        except:
-            pass
-    
-    # Card mejorada con más información
-    with st.container():
-    
-        # Imagen optimizada con mejor manejo de errores
-        if noticia.get('imagen'):
-            try:
-                # Contenedor para la imagen con aspect ratio
-                st.markdown("""
-                <div style="border-radius: 8px; overflow: hidden; margin: 0.5rem 0;">
-                """, unsafe_allow_html=True)
-                st.image(
-                    noticia["imagen"], 
-                    use_container_width=True,
-                    caption=""
-                )
-                st.markdown("</div>", unsafe_allow_html=True)
-            except Exception as e:
-                st.markdown("""
-                <div class="image-placeholder">
-                    <div class="placeholder-icon">📷</div>
-                    <div class="placeholder-text">Imagen no disponible</div>
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            st.markdown("""
-            <div class="image-placeholder">
-                <div class="placeholder-icon">📄</div>
-                <div class="placeholder-text">Sin imagen</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Resumen optimizado con mejor legibilidad
-        contenido = noticia['contenido'].strip()
-        if len(contenido) > 0:
-            resumen = contenido[:150] + "..." if len(contenido) > 150 else contenido
-            st.markdown(f"""
-            <div class="news-content">
-                <p style="margin: 0; line-height: 1.5; color: #4b5563;">{resumen}</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Botones de acción mejorados con mejor UX
-        col1, col2, col3 = st.columns([2, 2, 1])
-        
-        with col1:
-            if st.button("📖 Leer completo", key=f"leer_{noticia['id']}", 
-                        use_container_width=True, type="primary"):
-                st.session_state.noticia_seleccionada = noticia['id']
-                registrar_lectura(noticia['id'])
-                st.rerun()
-        
-        with col2:
-            fav_text = "💝 Quitar favorito" if es_favorito else "🤍 Agregar a favoritos"
-            fav_type = "secondary" if es_favorito else "primary"    
-            if st.button(fav_text, key=f"fav_{noticia['id']}", 
-                        use_container_width=True, type=fav_type):
-                if es_favorito:
-                    st.session_state.favoritos.remove(noticia['id'])
-                    mostrar_toast("❌ Eliminado de favoritos", "warning")
-                else:
-                    st.session_state.favoritos.add(noticia['id'])
-                    mostrar_toast("✅ Agregado a favoritos", "success")
-                time.sleep(0.3)
-                st.rerun()
-        
-        with col3:
-            if noticia.get('url_original'):
-                if st.button("🔗", key=f"link_{noticia['id']}", 
-                            use_container_width=True, help="Abrir enlace original"):
-                    st.markdown(f'<a href="{noticia["url_original"]}" target="_blank"></a>', 
-                              unsafe_allow_html=True)
-                    st.toast("🌐 Abriendo enlace original...")
+    except Exception as e:
+        logger.exception("Error mostrando card compacta")
+        st.error(f"Error en card compacta: {str(e)}")
