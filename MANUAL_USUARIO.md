@@ -1,274 +1,191 @@
-# Manual de Usuario - Portal de Noticias Pastor
+# 📖 Manual de Usuario - Portal de Noticias Pastor
 
-## 📖 Guía de Uso del Sistema
+## 🚀 Acceso al Sistema
 
-### 1. Acceso al Sistema
+### Primer Inicio
+1. **Ejecutar aplicación:** `streamlit run app.py`
+2. **Credenciales iniciales:**
+   - 👤 Usuario: `admin`
+   - 🔑 Contraseña: `admin123`
+   - 📧 Email: `admin@pastornoticias.com`
 
-#### Primer Inicio de Sesión
-1. Ejecuta la aplicación con: `python app.py`
-2. Accede con las credenciales por defecto:
-   - **Usuario:** `admin`
-   - **Contraseña:** `admin123`
-3. **Importante:** Cambia la contraseña después del primer acceso
+> ⚠️ **Cambia la contraseña después del primer acceso**
 
-#### Inicio de Sesión Regular
-- Ingresa tu usuario y contraseña en la pantalla de login
-- El sistema recordará tu sesión hasta que cierres sesión manualmente
-
----
-
-### 2. Roles y Permisos
-
-El sistema cuenta con 4 niveles de usuarios:
-
-| Rol | Permisos |
-|-----|----------|
-| **Super Admin** | Control total del sistema, gestión de usuarios, todas las fuentes de scraping |
-| **Admin** | Gestión de noticias y usuarios, todas las fuentes de scraping |
-| **Editor** | Edición de noticias, fuentes de scraping básicas y algunas avanzadas |
-| **Usuario** | Lectura de noticias, favoritos, fuentes de scraping básicas |
+### Inicio de Sesión Regular
+- Ingresa usuario y contraseña
+- El sistema mantiene tu sesión activa
+- Cierra sesión manualmente cuando termines
 
 ---
 
-### 3. Panel Principal (Dashboard)
+## 👥 Roles del Sistema
 
-#### Navegación
-- **Inicio:** Vista principal con las últimas noticias
-- **Buscar:** Busca noticias por título, categoría o contenido
-- **Favoritos:** Noticias que has marcado como favoritas
-- **Lecturas:** Historial de noticias que has leído
-- **Admin:** Panel de administración (solo para admins)
-
-#### Visualización de Noticias
-Las noticias se muestran en tarjetas con:
-- Imagen destacada
-- Título
-- Categoría
-- Fecha de publicación
-- Resumen del contenido
-
-#### Acciones sobre Noticias
-- **Click en tarjeta:** Ver detalle completo
-- **⭐ Favorito:** Marcar/desmarcar como favorita
-- **📖 Leer:** Acceder al contenido completo
+| Rol | Permisos | Acciones |
+|-----|----------|----------|
+| **Admin** | Control total | Gestión completa de usuarios y noticias |
+| **Editor** | Edición limitada | Editar noticias, scraping básico |
+| **Usuario** | Acceso básico | Ver noticias, gestionar favoritos |
 
 ---
 
-### 4. Búsqueda de Noticias
+## 🎯 Navegación Principal
 
-1. Click en **"Buscar"** en el menú lateral
-2. Escribe tu término de búsqueda
-3. Filtra por:
-   - **Categoría:** Todas, Política, Economía, Deportes, etc.
-   - **Fecha:** Últimas 24h, 7 días, 30 días, Todo
-4. Los resultados se actualizan automáticamente
+### Menú Lateral
+- **🏠 Inicio** - Noticias recientes
+- **🔍 Buscar** - Búsqueda avanzada
+- **⭐ Favoritos** - Tus noticias guardadas
+- **📖 Lecturas** - Historial de lectura
+- **⚙️ Admin** - Panel administrativo (solo admins)
 
----
-
-### 5. Detalle de Noticia
-
-Al hacer click en una noticia verás:
-- **Título completo**
-- **Imagen principal**
-- **Fecha y categoría**
-- **Contenido completo**
-- **Enlace a la fuente original**
-
-**Acciones disponibles:**
-- ⭐ **Agregar/Quitar favoritos**
-- 🔗 **Ver fuente original**
-- ← **Volver al inicio**
+### Tarjetas de Noticias
+Cada noticia muestra:
+- 🖼️ Imagen destacada
+- 📰 Título y resumen
+- 🏷️ Categoría y fecha
+- ⭐ Botón para favoritos
 
 ---
 
-### 6. Gestión de Favoritos
+## 🔍 Búsqueda de Noticias
 
-#### Agregar a Favoritos
-1. Haz click en el ícono ⭐ en cualquier tarjeta de noticia
-2. El ícono cambiará de color para confirmar
+### Búsqueda Básica
+1. Click en **"Buscar"** en el menú
+2. Escribe palabras clave
+3. Resultados en tiempo real
 
-#### Ver Favoritos
-1. Click en **"Favoritos"** en el menú lateral
-2. Verás todas tus noticias favoritas
-3. Click en cualquier tarjeta para leer el contenido
-
-#### Eliminar de Favoritos
-- Click en ⭐ nuevamente para desmarcar
+### Filtros Disponibles
+- **📅 Fecha:** 24h, 7 días, 30 días, Todo
+- **🏷️ Categoría:** Política, Economía, Deportes, etc.
+- **🔤 Orden:** Más reciente, Más antiguo
 
 ---
 
-### 7. Historial de Lecturas
+## 📰 Visualización de Noticias
 
-El sistema registra automáticamente las noticias que lees:
-1. Click en **"Lecturas"** en el menú lateral
-2. Verás tu historial ordenado por fecha
-3. Información incluye:
-   - Noticias leídas
-   - Fecha y hora de lectura
-   - Tiempo de lectura
+### Vista Detallada
+Al hacer click en una noticia:
+- ✅ Contenido completo expandido
+- ✅ Imágenes y multimedia
+- ✅ Fuente original y fecha
+- ✅ Botones de acción
 
----
-
-### 8. Panel de Administración
-
-> **Nota:** Solo disponible para usuarios con rol Admin o Super Admin
-
-#### Estadísticas Generales
-- Total de noticias en el sistema
-- Noticias activas
-- Total de usuarios
-- Actividad reciente
-
-#### Gestión de Noticias
-- **Ver todas:** Lista completa de noticias
-- **Editar:** Modificar título, contenido, categoría
-- **Activar/Desactivar:** Ocultar noticias sin eliminarlas
-- **Eliminar:** Borrar permanentemente (requiere confirmación)
-
-#### Gestión de Usuarios
-- **Crear usuario:** Agregar nuevos usuarios al sistema
-- **Editar usuario:** Modificar datos y permisos
-- **Cambiar rol:** Asignar permisos (usuario, editor, admin, super admin)
-- **Activar/Desactivar:** Bloquear acceso temporal
-- **Eliminar:** Borrar usuario permanentemente
-
-#### Scraping Manual
-1. Selecciona una fuente de noticias permitida
-2. Click en **"Ejecutar Scraping"**
-3. Espera a que se complete el proceso
-4. Revisa el log de resultados:
-   - Noticias encontradas
-   - Noticias nuevas agregadas
-   - Errores (si los hay)
-
-#### Configuración del Sistema
-Ajusta parámetros como:
-- Intervalo de scraping automático
-- Máximo de noticias por sesión
-- Modo debug
-- URLs de scraping
+### Acciones Disponibles
+- **⭐ Favorito** - Guardar/eliminar de favoritos
+- **🔗 Fuente** - Ver noticia original
+- **← Volver** - Regresar al listado
 
 ---
 
-### 9. Scraping Automático
+## ❤️ Gestión de Favoritos
 
-El sistema puede obtener noticias automáticamente:
+### Agregar Favoritos
+1. Click en ⭐ en cualquier tarjeta
+2. Ícono cambia a amarillo ✅
+3. Se guarda automáticamente
 
-#### Configuración en el archivo `.env`
-```env
-AUTO_SCRAPING=true          # Activar scraping automático
-SCRAPING_INTERVAL=120       # Intervalo en segundos (120 = 2 minutos)
-MAX_NEWS_PER_SCRAPE=50     # Máximo de noticias por ejecución
-```
+### Ver Favoritos
+1. Click en **"Favoritos"** en menú lateral
+2. Lista completa de noticias guardadas
+3. Click para leer contenido completo
 
-#### Daemon de Scraping
-Ejecuta en otra terminal:
-```bash
-python scraping_daemon.py
-```
-
-El daemon:
-- Ejecuta scraping cada X segundos (según configuración)
-- Registra logs de cada ejecución
-- Evita duplicados automáticamente
-- Funciona en segundo plano
+### Eliminar Favoritos
+- Click en ⭐ nuevamente (se desactiva)
+- Se elimina de la lista automáticamente
 
 ---
 
-### 10. Fuentes de Scraping Permitidas
+## 📊 Panel de Administración
 
-Según tu rol, puedes scrapear diferentes fuentes:
+> 🔒 Solo para usuarios Admin
 
-#### Fuentes Básicas (Todos los usuarios)
-- Diario Sin Fronteras
-- La República
+### Estadísticas
+- 📈 Total de noticias
+- 👥 Usuarios registrados
+- 📊 Noticias activas/inactivas
+- 📈 Actividad reciente
 
-#### Fuentes Avanzadas (Editor y superiores)
-- El Peruano
-- Andina
-- Perú21
-- El Comercio
+### Gestión de Noticias
+- **📋 Listar** - Ver todas las noticias
+- **✏️ Editar** - Modificar contenido
+- **🚫 Desactivar** - Ocultar sin eliminar
+- **🗑️ Eliminar** - Borrar permanentemente
 
-#### Agregar Nuevas Fuentes
-Los Super Admin pueden agregar fuentes desde el panel de configuración.
-
----
-
-### 11. Modo Oscuro/Claro
-
-1. Click en el botón **🌙/☀️** en la barra superior
-2. El tema se cambia automáticamente
-3. La preferencia se guarda para futuras sesiones
+### Gestión de Usuarios
+- **👥 Crear usuario** - Agregar nuevos usuarios
+- **⚙️ Editar permisos** - Cambiar roles
+- **🔒 Activar/desactivar** - Control de acceso
+- **🗑️ Eliminar usuario** - Remover del sistema
 
 ---
 
-### 12. Cerrar Sesión
+## 🔄 Scraping de Noticias
 
-1. Click en tu nombre de usuario en la barra superior
-2. Selecciona **"Cerrar Sesión"**
-3. Serás redirigido a la pantalla de login
+### Scraping Manual (Admins)
+1. Ir a **Panel Admin → Scraping**
+2. Seleccionar fuentes permitidas
+3. Click en **"Ejecutar Scraping"**
+4. Revisar resultados en logs
 
----
-
-### 13. Solución de Problemas Comunes
-
-#### No puedo iniciar sesión
-- Verifica que la base de datos esté funcionando
-- Confirma que el usuario existe
-- Intenta con las credenciales por defecto
-
-#### No veo noticias
-- Ejecuta scraping manual desde el panel de admin
-- Verifica que haya noticias activas en la base de datos
-- Revisa los logs de scraping
-
-#### Error de conexión a la base de datos
-- Verifica la configuración en `config.py`
-- Confirma que MySQL esté corriendo en el puerto correcto
-- Revisa las credenciales en `.env`
-
-#### El scraping no encuentra noticias
-- Verifica que la URL de la fuente sea correcta
-- Confirma que tienes permisos para esa fuente
-- Revisa los logs en la tabla `scraping_logs`
+### Fuentes Disponibles
+- **Básicas:** Diario Sin Fronteras, La República
+- **Avanzadas:** El Peruano, Andina, Perú21, El Comercio
 
 ---
 
-### 14. Atajos de Teclado
+## 🎨 Personalización
 
-| Atajo | Acción |
-|-------|--------|
-| `Ctrl + F` | Abrir búsqueda |
-| `Esc` | Cerrar vista de detalle |
-| `Ctrl + D` | Ir al dashboard |
-| `Ctrl + L` | Cerrar sesión |
+### Modo Oscuro/Claro
+- Click en **🌙/☀️** en barra superior
+- Cambio instantáneo
+- Preferencia guardada
 
----
-
-### 15. Consejos de Uso
-
-✅ **Buenas Prácticas:**
-- Cambia la contraseña por defecto en el primer acceso
-- Ejecuta scraping manual en horarios de baja actividad
-- Revisa los logs de scraping regularmente
-- Mantén activas solo las noticias relevantes
-- Haz backup de la base de datos periódicamente
-
-❌ **Evita:**
-- Ejecutar múltiples scraping simultáneos
-- Modificar directamente la base de datos sin el panel
-- Dar permisos de admin a usuarios no confiables
-- Eliminar noticias sin verificar dependencias
+### Cerrar Sesión
+1. Click en nombre de usuario (barra superior)
+2. Seleccionar **"Cerrar Sesión"**
+3. Redirección automática a login
 
 ---
 
-### 16. Contacto y Soporte
+## ❓ Solución de Problemas
 
-Para dudas o problemas:
-- Revisa la documentación en `README.md`
-- Consulta la guía de instalación en `GUIA_INSTALACION.md`
-- Contacta al administrador del sistema
+### Problemas Comunes
+| Problema | Solución |
+|----------|----------|
+| **No puedo iniciar sesión** | Verificar credenciales, revisar estado de BD |
+| **No veo noticias** | Ejecutar scraping manual, verificar noticias activas |
+| **Error de conexión** | Verificar MySQL ejecutándose, revisar config.py |
+| **Scraping falla** | Verificar URLs, permisos de fuente, revisar logs |
+
+### Contacto de Soporte
+- 📧 Email: admin@pastornoticias.com
+- 📖 Documentación: Revisar README.md
+- 🔧 Soporte técnico: Contactar administrador
 
 ---
 
-**¡Listo! Ahora estás preparado para usar el Portal de Noticias Pastor** 🎉
+## 💡 Consejos de Uso
+
+### ✅ Mejores Prácticas
+- Cambiar contraseña regularmente
+- Ejecutar scraping en horarios de baja demanda
+- Revisar logs periódicamente
+- Mantener solo noticias relevantes activas
+
+### ❌ Qué Evitar
+- Múltiples scraping simultáneos
+- Modificación directa de base de datos
+- Permisos admin a usuarios no verificados
+- Eliminación sin verificar dependencias
+
+---
+
+## 🎊 ¡Listo para Usar!
+
+**¡Bienvenido al Portal de Noticias Pastor!** 🎉
+
+- Explora las noticias más recientes
+- Guarda tus favoritos para leer después
+- Usa la búsqueda para encontrar temas específicos
+- Disfruta de una experiencia personalizada
+
+¿Necesitas ayuda? Contacta al administrador del sistema.
