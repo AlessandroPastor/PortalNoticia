@@ -299,7 +299,7 @@ graph TD
 <div align="center">
 
 **¿Necesitas ayuda adicional?**  
-📧 **Contacto:** admin@pastornoticias.com  
+📧 **Contacto:** alexander.sandoval150fd@gmail.com 
 🐛 **Reportar issues:** [GitHub Issues]()
 
 ---
@@ -308,3 +308,4 @@ graph TD
 *El portal de noticias más moderno y eficiente*
 
 </div>
+
