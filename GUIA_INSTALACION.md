@@ -1,4 +1,4 @@
-# 🚀 Guía de Instalación - Pastor Noticias con Login
+# 🚀 Guía de Instalación - Pastor Noticias "Q Pasa"
 
 ## 📋 Pasos para hacer funcionar todo
 
@@ -201,4 +201,4 @@ Si tienes problemas:
 1. Verifica que MySQL esté ejecutándose
 2. Verifica que la configuración en `config.py` sea correcta
 3. Revisa los logs en la consola de PowerShell
-4. Asegúrate de tener todas las dependencias instaladas
+4. Asegúrate de tener todas las dependencias instaladas Pastor
